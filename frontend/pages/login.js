@@ -11,8 +11,13 @@ export default function Home() {
 
   const onSubmit = async ({ email, password }) => {
     try {
-      await login(email, password);
-      await router.push('/');
+      const loginAttempt = await login(email, password);
+      if (loginAttempt.status === 204) {
+        router.push('/');
+      } else {
+        alert('Login failed');
+      }
+      
     } catch (error) {
       console.error(error);
     }

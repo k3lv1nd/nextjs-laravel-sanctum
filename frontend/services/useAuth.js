@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
+import { useRouter } from 'next/router';
 import cookie from 'cookie';
 
 const authContext = createContext();
@@ -14,6 +15,7 @@ export const useAuth = () => {
 
 function useProvideAuth() {
   const [user, setUser] = useState(null);
+  const router = useRouter();
 
   const login = (email, password) => fetch('http://localhost:3000/api/login', {
     method: 'POST',
@@ -65,6 +67,10 @@ function useProvideAuth() {
   };
 
   useEffect(() => {
+    if(['/login', '/logout'].includes(router.pathname)) {
+      return;
+    }
+
     fetchUser();
 
     return () => fetchUser();
