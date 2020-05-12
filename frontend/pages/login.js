@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import fetch from 'node-fetch'
 import tw from 'twin.macro'
 import { useForm } from "react-hook-form";
 import { useRouter } from 'next/router';
