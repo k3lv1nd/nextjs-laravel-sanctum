@@ -1,10 +1,5 @@
-import React, { useState, useEffect, useContext, createContext } from "react";
-import axios from 'axios';
-
-// Where does this go? I would rather use Fetch but could not get cookies working so used Axios
-// Should we use Next.js API routes? I am not sure
-axios.defaults.withCredentials = true;
-axios.defaults.baseURL = 'http://localhost:8000/'
+import React, { useState, useEffect, useContext, createContext } from 'react';
+import cookie from 'cookie';
 
 const authContext = createContext();
 
@@ -20,36 +15,51 @@ export const useAuth = () => {
 function useProvideAuth() {
   const [user, setUser] = useState(null);
 
-  const login = (email, password) => axios.post('/login', {
-    email,
-    password,
+  const login = (email, password) => fetch('http://localhost:3000/api/login', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-XSRF-TOKEN': cookie.parse(document.cookie)['XSRF-TOKEN'] || false,
+    },
+    body: JSON.stringify({ email, password })
   }).then(data => {
     fetchUser();
 
     return data;
   });
 
-  const register = (email, password) => {}; // TODO
+  const register = (email, password) => { }; // TODO
 
-  const logout = () => axios.post('/logout').then(data => {
+  const logout = (email, password) => fetch('http://localhost:3000/api/logout', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-XSRF-TOKEN': cookie.parse(document.cookie)['XSRF-TOKEN'] || false,
+    },
+  }).then(data => {
     setUser(false);
 
     return data;
   });
 
-  const sendPasswordResetEmail = email => {}; // TODO
+  const sendPasswordResetEmail = email => { }; // TODO
 
-  const confirmPasswordReset = (code, password) => {}; // TODO
+  const confirmPasswordReset = (code, password) => { }; // TODO
 
   const fetchUser = async () => {
     try {
-      const user = await axios.get('/api/user');
-      if (user.data) {
-        setUser(user.data);
-      } else {
-        setUser(false);
-      }
-    } catch(error) {
+      const user = await fetch('http://localhost:3000/api/user', {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'X-XSRF-TOKEN': cookie.parse(document.cookie)['XSRF-TOKEN'] || false,
+        },
+      });
+      const data = await user.json();
+      setUser(data);
+    } catch (error) {
       setUser(false);
     }
   };
