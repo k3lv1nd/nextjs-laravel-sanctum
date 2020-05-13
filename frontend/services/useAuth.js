@@ -59,6 +59,11 @@ function useProvideAuth() {
           'X-XSRF-TOKEN': cookie.parse(document.cookie)['XSRF-TOKEN'] || false,
         },
       });
+      if (user.status !== 200) {
+        setUser(false);
+        return;
+      }
+
       const data = await user.json();
       setUser(data);
     } catch (error) {

@@ -24,6 +24,9 @@ export default function Home() {
               <a tw="inline-block bg-blue-500 p-3 rounded block mt-4">Login</a>
             </Link>
           )}
+        <Link href="/secure">
+          <a tw="inline-block bg-blue-500 p-3 rounded block mt-4">You must be logged in to view this page.</a>
+        </Link>
       </main>
     </div>
   )
