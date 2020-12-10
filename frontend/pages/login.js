@@ -43,6 +43,7 @@ export async function getServerSideProps({ res, req }) {
   // Is there a better way to know the user is already logged in?
   try {
     const isAuthed = await fetch(`http://localhost:8000/api/user`, {
+      credentials: "include",
       headers: {
         accept: 'application/json',
         referer: 'http://localhost:3000/',

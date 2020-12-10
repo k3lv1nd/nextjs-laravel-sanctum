@@ -19,6 +19,7 @@ function useProvideAuth() {
 
   const login = (email, password) => fetch('http://localhost:3000/api/login', {
     method: 'POST',
+    credentials: "include",
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
@@ -35,6 +36,7 @@ function useProvideAuth() {
 
   const logout = (email, password) => fetch('http://localhost:3000/api/logout', {
     method: 'POST',
+    credentials: "include",
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
